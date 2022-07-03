@@ -1,0 +1,4 @@
+{
+    "extends": "@hlib/tsconfig",
+    "include": ["src", "test"]
+}
