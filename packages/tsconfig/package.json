@@ -1,0 +1,23 @@
+{
+    "name": "@hlib/tsconfig",
+    "version": "1.0.0",
+    "description": "Base Typescript config for packages",
+    "main": "tsconfig.json",
+    "files": [
+        "tsconfig.json"
+    ],
+    "scripts": {},
+    "author": "John Hunter Kohler <jhunterkohler@gmail.com>",
+    "repository": {
+        "type": "git",
+        "directory": "packages/tsconfig",
+        "url": "https://github.com/hunterkohler/hlib-js.git"
+    },
+    "keywords": [
+        "tsconfig",
+        "typescript",
+        "ts",
+        "config"
+    ],
+    "license": "MIT"
+}
