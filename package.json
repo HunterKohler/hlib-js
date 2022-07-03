@@ -1,0 +1,22 @@
+{
+    "name": "@hlib/monorepo",
+    "version": "1.0.0",
+    "description": "Monorepo",
+    "scripts": {
+        "test": "jest",
+        "build": "tsc -b packages/*/tsconfig.build.json",
+        "lint": "prettier --check"
+    },
+    "author": "John Hunter Kohler <jhunterkohler@gmail.com>",
+    "license": "MIT",
+    "workspaces": [
+        "packages/tsconfig",
+        "packages/guards",
+        "packages/types"
+    ],
+    "devDependencies": {
+        "@types/node": "^18.0.0",
+        "prettier": "^2.7.1",
+        "tslib": "^2.4.0"
+    }
+}
