@@ -81,7 +81,7 @@ export const isBlob = instanceCheck(Blob);
 export function isAnyArrayBuffer(
     value: unknown
 ): value is ArrayBuffer | SharedArrayBuffer {
-    return value instanceof ArrayBuffer || value instanceof SharedArrayBuffer;
+    return isArrayBuffer(value) || isSharedArrayBuffer(value);
 }
 
 export function isArrayBufferView(value: unknown): value is ArrayBufferView {
@@ -181,4 +181,8 @@ export function isPastDate(value: unknown) {
 
 export function isFutureDate(value: unknown) {
     return isDate(value) && value.getTime() > Date.now();
+}
+
+export function isPropertyKey(value: unknown): value is PropertyKey {
+    return isString(value) || isSymbol(value) || isNull(value);
 }
