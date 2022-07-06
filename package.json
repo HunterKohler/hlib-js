@@ -3,10 +3,10 @@
     "version": "1.0.0",
     "description": "Monorepo",
     "scripts": {
-        "build": "tsc -b packages/*/tsconfig.build.json",
-        "clean": "npm run --workspaces --if-present clean && rm -rf build",
-        "lint": "prettier --check",
-        "test": "jest"
+        "build": "./scripts/build",
+        "clean": "./scripts/clean",
+        "lint": "./scripts/lint",
+        "test": "./scripts/test"
     },
     "author": "John Hunter Kohler <jhunterkohler@gmail.com>",
     "license": "MIT",
