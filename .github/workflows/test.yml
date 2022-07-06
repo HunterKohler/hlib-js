@@ -2,14 +2,10 @@ name: Test
 
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches:
       - master
-    paths:
-      - packages/**/*.ts
-  pull_request:
-    paths:
-      - packages/**/*.ts
 
 jobs:
   build:
