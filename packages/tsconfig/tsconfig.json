@@ -7,11 +7,11 @@
         "exactOptionalPropertyTypes": false,
         "noFallthroughCasesInSwitch": false,
         "noImplicitAny": true,
-        "noImplicitOverride": true,
+        "noImplicitOverride": false,
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noPropertyAccessFromIndexSignature": true,
-        "noUncheckedIndexedAccess": true,
+        "noUncheckedIndexedAccess": false,
         "noUnusedLocals": false,
         "noUnusedParameters": false,
         "strict": true,
@@ -22,7 +22,6 @@
         "useUnknownInCatchVariables": true,
 
         // Modules
-
         "allowUmdGlobalAccess": false,
         // "baseUrl": "",
         "module": "NodeNext",
@@ -63,7 +62,7 @@
 
         // JavaScript Support
         "allowJs": true,
-        "checkJs": true,
+        "checkJs": false,
         // "maxNodeModuleJsDepth": 0,
 
         // Editor Support

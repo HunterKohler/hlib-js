@@ -6,7 +6,6 @@
     "files": [
         "tsconfig.json"
     ],
-    "scripts": {},
     "author": "John Hunter Kohler <jhunterkohler@gmail.com>",
     "repository": {
         "type": "git",

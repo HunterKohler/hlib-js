@@ -1,3 +1,4 @@
 {
-    "extends": "@hlib/tsconfig"
+    "extends": "@hlib/tsconfig",
+    "include": ["packages/*/src/**/*.ts", "packages/*/test/**/*.ts"]
 }
