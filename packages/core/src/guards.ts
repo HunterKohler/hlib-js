@@ -1,14 +1,12 @@
 import {
-    AbstractConstructor,
     AsyncFunction,
     AsyncGenerator,
     AsyncGeneratorFunction,
-    BoxedPrimitive,
     Generator,
     GeneratorFunction,
-    Nullish,
-    TypedArray,
-} from "@hlib/types";
+} from "./types/function-constructor";
+import { BoxedPrimitive, Nullish } from "./types/primitive";
+import { TypedArray } from "./types/typed-array";
 
 function typeofCheck<T>(name: string) {
     return function (value: unknown): value is T {
@@ -16,7 +14,7 @@ function typeofCheck<T>(name: string) {
     };
 }
 
-function instanceCheck<T>(constructor: AbstractConstructor<T>) {
+function instanceCheck<T>(constructor: abstract new (...args: any[]) => T) {
     return function (value: unknown): value is T {
         return value instanceof constructor;
     };
