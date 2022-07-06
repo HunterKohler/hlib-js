@@ -3,20 +3,25 @@
     "version": "1.0.0",
     "description": "Monorepo",
     "scripts": {
-        "test": "jest",
         "build": "tsc -b packages/*/tsconfig.build.json",
-        "lint": "prettier --check"
+        "clean": "npm run --workspaces --if-present clean && rm -rf build",
+        "lint": "prettier --check",
+        "test": "jest"
     },
     "author": "John Hunter Kohler <jhunterkohler@gmail.com>",
     "license": "MIT",
     "workspaces": [
         "packages/tsconfig",
-        "packages/guards",
-        "packages/types"
+        "packages/multipart",
+        "packages/core"
     ],
     "devDependencies": {
-        "@types/node": "^18.0.0",
+        "@jest/globals": "^28.1.2",
+        "@types/node": "^18.0.1",
+        "jest": "^28.1.2",
         "prettier": "^2.7.1",
+        "ts-jest": "^28.0.5",
+        "ts-node": "^10.8.2",
         "tslib": "^2.4.0"
     }
 }
