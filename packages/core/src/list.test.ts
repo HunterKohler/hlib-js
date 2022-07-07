@@ -25,7 +25,7 @@ describe("List", function () {
         it("returns undefined for empty list", function () {
             const list = new List();
 
-            expect(list.front).toBeUndefined;
+            expect(list.front).toBeUndefined();
         });
 
         it("returns first item for non-empty list", function () {
@@ -40,10 +40,10 @@ describe("List", function () {
         it("returns undefined for empty list", function () {
             const list = new List();
 
-            expect(list.back).toBeUndefined;
+            expect(list.back).toBeUndefined();
         });
 
-        it("returns first item for non-empty list", function () {
+        it("returns last item for non-empty list", function () {
             const item = new ListItem();
             const list = new List([item]);
 
@@ -101,7 +101,7 @@ describe("List", function () {
         });
     });
 
-    describe("pushback(...items)", function () {
+    describe("pushBack(...items)", function () {
         it("adds 'items' to back of empty list", function () {
             const list = new List();
             const items = makeListItems(10);

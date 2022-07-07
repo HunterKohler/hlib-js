@@ -40,12 +40,16 @@ export class ListItem {
         getListItemData = (item) => item._data;
     }
 
-    static get [Symbol.species]() {
+    public static get [Symbol.species]() {
         return this;
     }
 
     public constructor() {
         this._data = new ListItemData();
+    }
+
+    public get [Symbol.toStringTag]() {
+        return "ListItem";
     }
 
     public get next() {
@@ -72,6 +76,10 @@ export class List<Item extends ListItem = ListItem> {
         if (items) {
             this.pushBack(...items);
         }
+    }
+
+    public get [Symbol.toStringTag]() {
+        return "List";
     }
 
     public get front() {
