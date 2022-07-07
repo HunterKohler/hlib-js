@@ -1,5 +1,5 @@
 import { AggregateAbortController } from "./aggregate-abort-controller";
-import { isFutureDate, isInteger, isNumber, isUndefined } from "./guards";
+import { isFutureDate, isInteger } from "./guards";
 import { List, ListItem } from "./list";
 import { PromiseController } from "./promise-controller";
 
