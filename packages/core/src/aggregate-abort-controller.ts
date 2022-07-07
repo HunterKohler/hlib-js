@@ -30,8 +30,16 @@ export class AggregateAbortController {
     }
 
     public add(...signals: AbortSignal[]) {
+        if (!this.signal.aborted) {
+            return;
+        }
+
         for (const signal of signals) {
             attachSignal(this._controller, signal);
         }
+    }
+
+    public abort(reason?: unknown) {
+        this._controller.abort(reason);
     }
 }
