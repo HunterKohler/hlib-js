@@ -79,7 +79,7 @@ export const isBuffer = instanceCheck(Buffer);
 export const isBlob = instanceCheck(Blob);
 
 export function isAnyArrayBuffer(
-    value: unknown
+    value: unknown,
 ): value is ArrayBuffer | SharedArrayBuffer {
     return isArrayBuffer(value) || isSharedArrayBuffer(value);
 }
@@ -146,7 +146,7 @@ export function isIterable(value: unknown): value is Iterable<unknown> {
 }
 
 export function isAsyncIterable(
-    value: unknown
+    value: unknown,
 ): value is AsyncIterable<unknown> {
     return isFunction((value as any)?.[Symbol.asyncIterator]);
 }
@@ -185,4 +185,10 @@ export function isFutureDate(value: unknown) {
 
 export function isPropertyKey(value: unknown): value is PropertyKey {
     return isString(value) || isSymbol(value) || isNull(value);
+}
+
+export function isRelativelyIndexable(
+    value: unknown,
+): value is RelativeIndexable<unknown> {
+    return isFunction((value as any)?.at);
 }
