@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 prettier --check \
     "packages/*/src/**/*.{t,j}s" \
     "*.{ts.js,json}" \
