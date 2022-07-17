@@ -1,170 +1,201 @@
 import {
+    ArrayIterator,
+    ArrayIteratorPrototype,
     AsyncFunction,
-    AsyncGenerator,
     AsyncGeneratorFunction,
-    Generator,
     GeneratorFunction,
-} from "./types/function-constructor";
-import { BoxedPrimitive, Nullish } from "./types/primitive";
-import { TypedArray } from "./types/typed-array";
+    MapIterator,
+    MapIteratorPrototype,
+    RegExpStringIterator,
+    RegExpStringIteratorPrototype,
+    SetIterator,
+    SetIteratorPrototype,
+    StringIterator,
+    StringIteratorPrototype,
+    TypedArray,
+} from "./intrinsics";
+import { setFunctionName } from "./lang";
+import { BoxedPrimitive } from "./types/boxed-primitive";
+import { Numeric } from "./types/numeric";
+import { Primitive } from "./types/primitive";
 
-function typeofCheck<T>(name: string) {
-    return function (value: unknown): value is T {
-        return typeof value == name;
-    };
-}
-
-function instanceCheck<T>(constructor: abstract new (...args: any[]) => T) {
-    return function (value: unknown): value is T {
+function makeInstanceGuard<T>(constructor: abstract new (...args: any[]) => T) {
+    function guard(value: unknown): value is T {
         return value instanceof constructor;
-    };
+    }
+
+    if (constructor.name) {
+        setFunctionName(guard, "is" + constructor.name);
+    }
+
+    return guard;
 }
 
-export const isBigInt = typeofCheck<bigint>("bigint");
-export const isBoolean = typeofCheck<boolean>("boolean");
-export const isFunction = typeofCheck<Function>("function");
-export const isNumber = typeofCheck<number>("number");
-export const isString = typeofCheck<string>("string");
-export const isSymbol = typeofCheck<symbol>("symbol");
-export const isUndefined = typeofCheck<undefined>("undefined");
+export function isNumber(value: unknown): value is number {
+    return typeof value == "number";
+}
 
-export function isObject(value: unknown): value is object {
-    return (typeof value == "object" && !value) || typeof value == "function";
+export function isString(value: unknown): value is string {
+    return typeof value == "string";
+}
+
+export function isBigInt(value: unknown): value is bigint {
+    return typeof value == "bigint";
+}
+
+export function isSymbol(value: unknown): value is symbol {
+    return typeof value == "symbol";
+}
+
+export function isBoolean(value: unknown): value is boolean {
+    return typeof value == "boolean";
+}
+
+export function isUndefined(value: unknown): value is undefined {
+    return typeof value == "undefined";
 }
 
 export function isNull(value: unknown): value is null {
     return value === null;
 }
 
-export function isNullish(value: unknown): value is Nullish {
+export function isNullish(value: unknown): value is null | undefined {
     return value == null;
+}
+
+export function isObject(value: unknown): value is object {
+    return (
+        (typeof value == "object" && Boolean(value)) ||
+        typeof value == "function"
+    );
+}
+
+export function isCallable(value: unknown): value is Function {
+    return typeof value == "function";
 }
 
 export function isArray(value: unknown): value is unknown[] {
     return Array.isArray(value);
 }
 
-export const isBooleanObject = instanceCheck(Boolean);
-export const isNumberObject = instanceCheck(Number);
-export const isStringObject = instanceCheck(String);
-export const isBigIntObject = instanceCheck<BigInt>(BigInt as any);
-export const isSymbolObject = instanceCheck<Symbol>(Symbol as any);
+export function isPrimitive(value: unknown): value is Primitive {
+    return !isObject(value);
+}
+
+export function isPropertyKey(value: unknown): value is string | symbol {
+    return isString(value) || isSymbol(value);
+}
+
+export function isPrototypeOf<T extends object>(
+    prototype: T,
+    value: unknown,
+): value is T {
+    return Object.prototype.isPrototypeOf.call(prototype, value as object);
+}
+
+export function isInstanceOf<T>(
+    value: unknown,
+    constructor: abstract new (...args: any[]) => T,
+): value is T {
+    return value instanceof constructor;
+}
+
+export const isInt8Array = makeInstanceGuard(Int8Array);
+export const isInt16Array = makeInstanceGuard(Int16Array);
+export const isInt32Array = makeInstanceGuard(Int32Array);
+export const isUint8Array = makeInstanceGuard(Uint8Array);
+export const isUint16Array = makeInstanceGuard(Uint16Array);
+export const isUint32Array = makeInstanceGuard(Uint32Array);
+export const isUint8ClampedArray = makeInstanceGuard(Uint8ClampedArray);
+export const isBigInt64Array = makeInstanceGuard(BigInt64Array);
+export const isBigUint64Array = makeInstanceGuard(BigUint64Array);
+export const isFloat32Array = makeInstanceGuard(Float32Array);
+export const isFloat64Array = makeInstanceGuard(Float64Array);
+
+export const isTypedArray = makeInstanceGuard(TypedArray);
+
+export const isDataView = makeInstanceGuard(DataView);
+export const isArrayBuffer = makeInstanceGuard(ArrayBuffer);
+export const isSharedArrayBuffer = makeInstanceGuard(SharedArrayBuffer);
+
+export const isError = makeInstanceGuard(Error);
+export const isEvalError = makeInstanceGuard(EvalError);
+export const isRangeError = makeInstanceGuard(RangeError);
+export const isReferenceError = makeInstanceGuard(ReferenceError);
+export const isSyntaxError = makeInstanceGuard(SyntaxError);
+export const isTypeError = makeInstanceGuard(TypeError);
+export const isURIError = makeInstanceGuard(URIError);
+export const isAggregateError = makeInstanceGuard(AggregateError);
+
+export const isAsyncFunction = makeInstanceGuard(AsyncFunction);
+export const isGeneratorFunction = makeInstanceGuard(GeneratorFunction);
+export const isAsyncGeneratorFunction = makeInstanceGuard(
+    AsyncGeneratorFunction,
+);
+
+export const isDate = makeInstanceGuard(Date);
+export const isFinalizationRegistry = makeInstanceGuard(FinalizationRegistry);
+export const isPromise = makeInstanceGuard(Promise);
+export const isProxy = makeInstanceGuard(Proxy);
+export const isRegExp = makeInstanceGuard(RegExp);
+export const isSet = makeInstanceGuard(Set);
+export const isMap = makeInstanceGuard(Map);
+export const isWeakSet = makeInstanceGuard(WeakSet);
+export const isWeakMap = makeInstanceGuard(WeakMap);
+export const isWeakRef = makeInstanceGuard(WeakRef);
+
+export function isStringIterator(value: unknown): value is StringIterator {
+    return isPrototypeOf(StringIteratorPrototype, value);
+}
+
+export function isRegExpStringIterator(
+    value: unknown,
+): value is RegExpStringIterator {
+    return isPrototypeOf(RegExpStringIteratorPrototype, value);
+}
+
+export function isArrayIterator(value: unknown): value is ArrayIterator {
+    return isPrototypeOf(ArrayIteratorPrototype, value);
+}
+
+export function isSetIterator(value: unknown): value is SetIterator {
+    return isPrototypeOf(SetIteratorPrototype, value);
+}
+
+export function isMapIterator(value: unknown): value is MapIterator {
+    return isPrototypeOf(MapIteratorPrototype, value);
+}
+
+export const isNumberObject = makeInstanceGuard(Number);
+export const isStringObject = makeInstanceGuard(String);
+export const isBooleanObject = makeInstanceGuard(Boolean);
+export const isBigIntObject = makeInstanceGuard<BigInt>(BigInt as any);
+export const isSymbolObject = makeInstanceGuard<Symbol>(Symbol as any);
 
 export function isBoxedPrimitive(value: unknown): value is BoxedPrimitive {
     return (
-        value instanceof String ||
-        value instanceof Number ||
-        value instanceof BigInt ||
-        value instanceof Boolean ||
-        value instanceof Symbol
+        isNumberObject(value) ||
+        isStringObject(value) ||
+        isBooleanObject(value) ||
+        isBigIntObject(value) ||
+        isSymbolObject(value)
     );
 }
 
-export const isInt8Array = instanceCheck(Int8Array);
-export const isUint8Array = instanceCheck(Uint8Array);
-export const isUint8ClampedArray = instanceCheck(Uint8ClampedArray);
-export const isUint16Array = instanceCheck(Uint16Array);
-export const isUint32Array = instanceCheck(Uint32Array);
-export const isBigInt64Array = instanceCheck(BigInt64Array);
-export const isBigUint64Array = instanceCheck(BigUint64Array);
-export const isFloat32Array = instanceCheck(Float32Array);
-export const isFloat64Array = instanceCheck(Float64Array);
-
-export const isTypedArray = instanceCheck(TypedArray);
-
-export const isArrayBuffer = instanceCheck(ArrayBuffer);
-export const isSharedArrayBuffer = instanceCheck(SharedArrayBuffer);
-export const isDataView = instanceCheck(DataView);
-export const isBuffer = instanceCheck(Buffer);
-export const isBlob = instanceCheck(Blob);
-
-export function isAnyArrayBuffer(
-    value: unknown,
-): value is ArrayBuffer | SharedArrayBuffer {
-    return isArrayBuffer(value) || isSharedArrayBuffer(value);
+export function isFinite(value: Numeric) {
+    return isBigInt(value) || Number.isFinite(value);
 }
 
-export function isArrayBufferView(value: unknown): value is ArrayBufferView {
-    return ArrayBuffer.isView(value);
-}
-
-export const isAsyncFunction = instanceCheck(AsyncFunction);
-
-export const isGeneratorFunction = instanceCheck(GeneratorFunction);
-export const isAsyncGeneratorFunction = instanceCheck(AsyncGeneratorFunction);
-
-export const isGenerator = instanceCheck(Generator);
-export const isAsyncGenerator = instanceCheck(AsyncGenerator);
-
-export const isError = instanceCheck(Error);
-export const isAggregateError = instanceCheck(AggregateError);
-export const isEvalError = instanceCheck<EvalError>(EvalError);
-export const isRangeError = instanceCheck<RangeError>(RangeError);
-export const isReferenceError = instanceCheck<ReferenceError>(ReferenceError);
-export const isSyntaxError = instanceCheck<SyntaxError>(SyntaxError);
-export const isTypeError = instanceCheck<TypeError>(TypeError);
-export const isURIError = instanceCheck<URIError>(URIError);
-
-export const isSet = instanceCheck(Set);
-export const isMap = instanceCheck(Map);
-export const isWeakMap = instanceCheck(WeakMap);
-export const isWeakSet = instanceCheck(WeakSet);
-export const isWeakRef = instanceCheck(WeakRef);
-
-export const isURL = instanceCheck(URL);
-export const isURLSearchParams = instanceCheck(URLSearchParams);
-
-export const isDate = instanceCheck(Date);
-export const isRegExp = instanceCheck(RegExp);
-export const isPromise = instanceCheck(Promise);
-
-export const isFinalizationRegistry = instanceCheck(FinalizationRegistry);
-
-export const isAbortController = instanceCheck(AbortController);
-export const isAbortSignal = instanceCheck(AbortSignal);
-
-export const isEventTarget = instanceCheck(EventTarget);
-
-export const isMessageChannel = instanceCheck(MessageChannel);
-export const isMessageEvent = instanceCheck(MessageEvent);
-export const isMessagePort = instanceCheck(MessagePort);
-export const isDOMException = instanceCheck(DOMException);
-export const isTextDecoder = instanceCheck(TextDecoder);
-export const isTextEncoder = instanceCheck(TextEncoder);
-export const isEvent = instanceCheck(Event);
-
-export function isPromiseLike(value: unknown): value is PromiseLike<unknown> {
-    return isFunction((value as any)?.then);
-}
-
-export function isIterator(value: unknown): value is Iterator<unknown> {
-    return isFunction((value as any)?.next);
-}
-
-export function isIterable(value: unknown): value is Iterable<unknown> {
-    return isFunction((value as any)?.[Symbol.iterator]);
-}
-
-export function isAsyncIterable(
-    value: unknown,
-): value is AsyncIterable<unknown> {
-    return isFunction((value as any)?.[Symbol.asyncIterator]);
-}
-
-export function isInteger(value: unknown) {
-    return Number.isInteger(value) || isBigInt(value);
-}
-
-export function isSafeInteger(value: unknown) {
-    return Number.isSafeInteger(value) || isBigInt(value);
-}
-
-export function isFinite(value: unknown) {
-    return Number.isFinite(value) || isBigInt(value);
-}
-
-export function isInfinite(value: unknown) {
+export function isInfinite(value: Numeric) {
     return !isFinite(value);
+}
+
+export function isInteger(value: Numeric) {
+    return isBigInt(value) || Number.isInteger(value);
+}
+
+export function isSafeInteger(value: Numeric) {
+    return isBigInt(value) || Number.isSafeInteger(value);
 }
 
 export function isNaN(value: unknown) {
@@ -172,23 +203,13 @@ export function isNaN(value: unknown) {
 }
 
 export function isValidDate(value: unknown) {
-    return isDate(value) && !Number.isNaN(value.getTime());
-}
-
-export function isPastDate(value: unknown) {
-    return isDate(value) && value.getTime() < Date.now();
+    return isDate(value) && !isNaN(value.valueOf());
 }
 
 export function isFutureDate(value: unknown) {
-    return isDate(value) && value.getTime() > Date.now();
+    return isDate(value) && value.valueOf() > Date.now();
 }
 
-export function isPropertyKey(value: unknown): value is PropertyKey {
-    return isString(value) || isSymbol(value) || isNull(value);
-}
-
-export function isRelativelyIndexable(
-    value: unknown,
-): value is RelativeIndexable<unknown> {
-    return isFunction((value as any)?.at);
+export function isPastDate(value: unknown) {
+    return isDate(value) && value.valueOf() < Date.now();
 }
