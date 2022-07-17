@@ -10,7 +10,7 @@
         "noImplicitOverride": false,
         "noImplicitReturns": true,
         "noImplicitThis": true,
-        "noPropertyAccessFromIndexSignature": true,
+        "noPropertyAccessFromIndexSignature": false,
         "noUncheckedIndexedAccess": false,
         "noUnusedLocals": false,
         "noUnusedParameters": false,
