@@ -14,5 +14,8 @@
         "directory": "packages/core"
     },
     "author": "John Hunter Kohler <jhunterkohler@gmail.com>",
-    "license": "MIT"
+    "license": "MIT",
+    "tsd": {
+        "directory": "./test"
+    }
 }

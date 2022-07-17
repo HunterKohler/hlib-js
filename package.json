@@ -6,14 +6,16 @@
         "build": "./scripts/build",
         "clean": "./scripts/clean",
         "lint": "./scripts/lint",
-        "test": "./scripts/test"
+        "test": "./scripts/test",
+        "test_types": "./scripts/test_types"
     },
     "author": "John Hunter Kohler <jhunterkohler@gmail.com>",
     "license": "MIT",
     "workspaces": [
         "packages/tsconfig",
         "packages/multipart",
-        "packages/core"
+        "packages/core",
+        "packages/es-operations"
     ],
     "devDependencies": {
         "@jest/globals": "^28.1.2",
@@ -22,7 +24,11 @@
         "prettier": "^2.7.1",
         "ts-jest": "^28.0.5",
         "ts-node": "^10.8.2",
+        "tsd": "^0.22.0",
         "tslib": "^2.4.0",
         "typescript": "^4.7.4"
+    },
+    "dependencies": {
+        "fp-ts": "^2.12.1"
     }
 }

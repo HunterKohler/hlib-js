@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -e
+
+argv=("$@")
+argc=$#
+
+if [[ $argc != 2 ]]; then
+    echo >&2 "Error: Expected arguments 'src' 'dest'"
+    echo >&2 "Usage: update_index src dest"
+    exit 1
+fi
+
+src=$(realpath --relative-to "${PWD}" "${argv[0]}")
+dest=$(realpath --relative-to "${PWD}" "${argv[1]}")
+src_files=$(
+    find "$src" \
+        -type f \
+        -name '*.ts' \
+        -not -name '*.test-d.ts' \
+        -not -name '*.test.ts' \
+        -not -name '*.spec.ts' \
+        -not -name 'index.ts' \
+        -not -name 'index.d.ts' \
+        -not -path "$dest"
+)
+
+output=""
+
+for file in $src_files; do
+    import_path="$(
+        realpath --relative-to "$dest" "$file" |
+            sed -E "s/^\.\.\//.\//" |
+            sed -E "s/^\.\/\.\.\//..\//" |
+            sed -E "s/(\.d)?\.ts$//"
+    )"
+
+    output+="export * from \"$import_path\"\n"
+done
+
+echo -e "$output" >"$dest"

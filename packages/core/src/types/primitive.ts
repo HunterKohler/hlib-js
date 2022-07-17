@@ -1,5 +1,3 @@
-export type Nullish = undefined | null;
-
 export type Primitive =
     | bigint
     | boolean
@@ -8,5 +6,3 @@ export type Primitive =
     | string
     | symbol
     | undefined;
-
-export type BoxedPrimitive = BigInt | Boolean | Number | String | Symbol;

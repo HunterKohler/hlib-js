@@ -1,0 +1,16 @@
+export type WORD_TEST_CASES = [
+    string,
+    "",
+    "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~",
+    "xyz abc uvw",
+    "XYZ_ABC_UVW",
+    "XyZ-aBc-UvW",
+    "camelCaseIdentifier",
+    "snake_case_identifier",
+    "PascalCaseIdentifier",
+    "CONSTANT_CASE_IDENTIFIER",
+    "$$null$$THEN_%#1>nums2",
+    " 123456789 ",
+    " 1_2_34567_89 ",
+    "(num1, num_2, Num3, NUM4)",
+];
